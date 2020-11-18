@@ -609,7 +609,7 @@ def plot_spectrum(boxes: list,
                         if 'label' in kwargs_copy:
                             del kwargs_copy['label']
 
-                        ax1.errorbar(wavelength, flux_scaling*boxitem.flux[item]/scaling, xerr=fwhm/2., yerr=None,
+                        ax1.errorbar(wavelength, flux_scaling*boxitem.flux[item]/scaling, xerr=0., yerr=None,
                                      zorder=4, mfc='white', **kwargs_copy)
 
                     else:
@@ -621,7 +621,7 @@ def plot_spectrum(boxes: list,
                         if 'mfc' in kwargs_copy:
                             del kwargs_copy['mfc']
 
-                        ax1.errorbar(wavelength, flux_scaling*boxitem.flux[item]/scaling, xerr=fwhm/2., yerr=None,
+                        ax1.errorbar(wavelength, flux_scaling*boxitem.flux[item]/scaling, xerr=0., yerr=None,
                                      zorder=4, mfc='white', **kwargs_copy)
 
     if filters is not None:

@@ -349,6 +349,8 @@ def plot_posterior(tag: str,
                         labels=labels,
                         label_kwargs={'fontsize': 13},
                         titles=hist_titles,
+                        smooth=True,
+                        plot_datapoints=False,
                         show_titles=True,
                         title_fmt=None,
                         title_kwargs={'fontsize': 12})
