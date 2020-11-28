@@ -1003,7 +1003,7 @@ class FitModel:
                       tag: str,
                       n_live_points: int = 1000,
                       output: str = 'multinest/',
-                      prior: Optional[Dict[str, Tuple[float, float]]] = None) -> None:
+                      prior: Optional[Dict[str, Tuple[float, float]]] = None) -> tuple:
         """
         Function to run the ``PyMultiNest`` wrapper of the ``MultiNest`` sampler. While
         ``PyMultiNest`` can be installed with ``pip`` from the PyPI repository, ``MultiNest``
@@ -1447,3 +1447,5 @@ class FitModel:
                                modelpar=self.modelpar,
                                distance=self.distance[0],
                                spec_labels=spec_labels)
+
+        return (ln_z, ln_z_error)

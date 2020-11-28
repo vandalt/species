@@ -21,6 +21,13 @@ from species.read import read_filter
 from species.util import plot_util
 
 
+MODEL_DICT = {
+        'drift-phoenix': 'DRIFT-PHOENIX',
+        'bt-settl': 'BT-Settl',
+
+        }
+
+
 @typechecked
 def plot_spectrum(boxes: list,
                   filters: Optional[List[str]] = None,
@@ -172,30 +179,31 @@ def plot_spectrum(boxes: list,
     if residuals is not None:
         ax3.set_xscale(scale[0])
 
+    ticksize = 14
     ax1.tick_params(axis='both', which='major', colors='black', labelcolor='black',
-                    direction='in', width=1, length=5, labelsize=12, top=True,
+                    direction='in', width=1, length=5, labelsize=ticksize, top=True,
                     bottom=True, left=True, right=True, labelbottom=labelbottom)
 
     ax1.tick_params(axis='both', which='minor', colors='black', labelcolor='black',
-                    direction='in', width=1, length=3, labelsize=12, top=True,
+                    direction='in', width=1, length=3, labelsize=ticksize, top=True,
                     bottom=True, left=True, right=True, labelbottom=labelbottom)
 
     if filters is not None:
         ax2.tick_params(axis='both', which='major', colors='black', labelcolor='black',
-                        direction='in', width=1, length=5, labelsize=12, top=True,
+                        direction='in', width=1, length=5, labelsize=ticksize, top=True,
                         bottom=True, left=True, right=True, labelbottom=False)
 
         ax2.tick_params(axis='both', which='minor', colors='black', labelcolor='black',
-                        direction='in', width=1, length=3, labelsize=12, top=True,
+                        direction='in', width=1, length=3, labelsize=ticksize, top=True,
                         bottom=True, left=True, right=True, labelbottom=False)
 
     if residuals is not None:
         ax3.tick_params(axis='both', which='major', colors='black', labelcolor='black',
-                        direction='in', width=1, length=5, labelsize=12, top=True,
+                        direction='in', width=1, length=5, labelsize=ticksize, top=True,
                         bottom=True, left=True, right=True)
 
         ax3.tick_params(axis='both', which='minor', colors='black', labelcolor='black',
-                        direction='in', width=1, length=3, labelsize=12, top=True,
+                        direction='in', width=1, length=3, labelsize=ticksize, top=True,
                         bottom=True, left=True, right=True)
 
     if scale[0] == 'linear':
@@ -213,24 +221,26 @@ def plot_spectrum(boxes: list,
     if residuals is not None and scale[0] == 'linear':
         ax3.xaxis.set_minor_locator(AutoMinorLocator(5))
 
+    label_fontsize = 16
+
     if residuals is not None and filters is not None:
         ax1.set_xlabel('')
         ax2.set_xlabel('')
-        ax3.set_xlabel('Wavelength (µm)', fontsize=13)
+        ax3.set_xlabel('Wavelength (µm)', fontsize=label_fontsize)
 
     elif residuals is not None:
         ax1.set_xlabel('')
         ax3.set_xlabel('Wavelength (µm)', fontsize=11)
 
     elif filters is not None:
-        ax1.set_xlabel('Wavelength (µm)', fontsize=13)
+        ax1.set_xlabel('Wavelength (µm)', fontsize=label_fontsize)
         ax2.set_xlabel('')
 
     else:
-        ax1.set_xlabel('Wavelength (µm)', fontsize=13)
+        ax1.set_xlabel('Wavelength (µm)', fontsize=label_fontsize)
 
     if filters is not None:
-        ax2.set_ylabel('Transmission', fontsize=13)
+        ax2.set_ylabel('Transmission', fontsize=label_fontsize)
 
     if residuals is not None:
         if quantity == 'flux density':
@@ -246,7 +256,7 @@ def plot_spectrum(boxes: list,
 
     if quantity == 'magnitude':
         scaling = 1.
-        ax1.set_ylabel('Flux contrast (mag)', fontsize=13)
+        ax1.set_ylabel('Flux contrast (mag)', fontsize=label_fontsize)
 
         if ylim:
             ax1.set_ylim(ylim[0], ylim[1])
@@ -266,7 +276,7 @@ def plot_spectrum(boxes: list,
             elif quantity == 'flux':
                 ylabel = r'$\lambda$$\mathregular{F}_\lambda$ (10$^{'+str(exponent)+r'}$ W m$^{-2}$)'
 
-            ax1.set_ylabel(ylabel, fontsize=11)
+            ax1.set_ylabel(ylabel, fontsize=label_fontsize)
             ax1.set_ylim(ylim[0]/scaling, ylim[1]/scaling)
 
             if ylim[0] < 0.:
@@ -391,6 +401,7 @@ def plot_spectrum(boxes: list,
                 else:
                     label = None
 
+                label = MODEL_DICT[boxitem.model]
                 if plot_kwargs[j]:
                     kwargs_copy = plot_kwargs[j].copy()
 
@@ -411,7 +422,7 @@ def plot_spectrum(boxes: list,
                     if quantity == 'flux':
                         flux_scaling = wavelength
 
-                    ax1.plot(wavelength, flux_scaling*masked/scaling, lw=0.5, label=label, zorder=2)
+                    ax1.plot(wavelength, flux_scaling*masked/scaling, lw=1.0, label=label, zorder=2)
 
             elif isinstance(wavelength[0], (np.ndarray)):
                 for i, item in enumerate(wavelength):
@@ -442,7 +453,7 @@ def plot_spectrum(boxes: list,
                 if plot_kwargs[j]:
                     ax1.plot(wavelength, flux_scaling*masked/scaling, zorder=1, **plot_kwargs[j])
                 else:
-                    ax1.plot(wavelength, flux_scaling*masked/scaling, color='gray', lw=0.2, alpha=0.5, zorder=1)
+                    ax1.plot(wavelength, flux_scaling*masked/scaling, color='gray', lw=0.5, alpha=0.5, zorder=1)
 
         elif isinstance(boxitem, box.PhotometryBox):
             label_check = []
@@ -699,12 +710,13 @@ def plot_spectrum(boxes: list,
 
     if title is not None:
         if filters:
-            ax2.set_title(title, y=1.02, fontsize=13)
+            ax2.set_title(title, y=1.02, fontsize=label_fontsize)
         else:
-            ax1.set_title(title, y=1.02, fontsize=13)
+            ax1.set_title(title, y=1.02, fontsize=label_fontsize)
 
     handles, labels = ax1.get_legend_handles_labels()
 
+    
     if handles and legend is not None:
         if isinstance(legend, list):
             model_handles = []
@@ -724,7 +736,6 @@ def plot_spectrum(boxes: list,
 
                 else:
                     warnings.warn(f'The object type {item} is not implemented for the legend.')
-
             if legend[0] is not None:
                 if isinstance(legend[0], (str, tuple)):
                     leg_1 = ax1.legend(model_handles, model_labels, loc=legend[0], fontsize=10., frameon=False)

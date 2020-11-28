@@ -347,16 +347,17 @@ def plot_posterior(tag: str,
     fig = corner.corner(samples,
                         quantiles=[0.16, 0.5, 0.84],
                         labels=labels,
-                        label_kwargs={'fontsize': 13},
+                        label_kwargs={'fontsize': 18},
                         titles=hist_titles,
                         smooth=True,
                         plot_datapoints=False,
                         show_titles=True,
                         title_fmt=None,
-                        title_kwargs={'fontsize': 12})
+                        title_kwargs={'fontsize': 15})
 
     axes = np.array(fig.axes).reshape((ndim, ndim))
 
+    ticksize = 15
     for i in range(ndim):
         for j in range(ndim):
             if i >= j:
@@ -369,12 +370,12 @@ def plot_posterior(tag: str,
                 labelbottom = i == ndim - 1
 
                 ax.tick_params(axis='both', which='major', colors='black', labelcolor='black',
-                               direction='in', width=1, length=5, labelsize=12, top=True,
+                               direction='in', width=1, length=5, labelsize=ticksize, top=True,
                                bottom=True, left=True, right=True, labelleft=labelleft,
                                labelbottom=labelbottom, labelright=False, labeltop=False)
 
                 ax.tick_params(axis='both', which='minor', colors='black', labelcolor='black',
-                               direction='in', width=1, length=3, labelsize=12, top=True,
+                               direction='in', width=1, length=3, labelsize=ticksize, top=True,
                                bottom=True, left=True, right=True, labelleft=labelleft,
                                labelbottom=labelbottom, labelright=False, labeltop=False)
 
