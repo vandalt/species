@@ -102,7 +102,8 @@ class SpeciesInit:
 
         elif isinstance(config_file, str):
             config_file = Path(config_file)
-            environ["SPECIES_CONFIG"] = str(config_file)
+
+        environ["SPECIES_CONFIG"] = str(config_file)
 
         config = ConfigParser(allow_no_value=True)
 
